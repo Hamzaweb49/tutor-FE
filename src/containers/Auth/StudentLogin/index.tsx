@@ -104,6 +104,7 @@ export default function StudentLogin() {
 
                 <button
                   type="submit"
+                  onClick={handleSignin}
                   className="bg-primary hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary flex justify-center w-full px-3 py-3 text-sm font-medium leading-6 text-white rounded-md shadow-sm"
                 >
                   Sign in
@@ -123,6 +124,14 @@ export default function StudentLogin() {
                   className="hover:text-indigo-500 text-primary mt-1 text-sm font-normal text-center"
                 >
                   Login as a Tutor
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/student-signup"
+                  className="hover:text-indigo-500 text-primary mt-1 text-sm font-normal text-center"
+                >
+                  Don't have an account? Create One
                 </Link>
               </div>
             </div>
