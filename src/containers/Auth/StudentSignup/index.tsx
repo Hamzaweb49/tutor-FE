@@ -1,28 +1,28 @@
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from 'src/hooks/useAuth';
 
-export default function StudentLogin() {
+export default function StudentSignup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-  const { login, googleLogin } = useAuth();
-
-  const handleSignin = (e) => {
-    e.preventDefault();
-    login(email, password)
-      .then(({ data }: any) => {
-        localStorage.setItem('jwtoken', data.token);
-        navigate('/');
-      })
-      .catch((err) => console.log(err));
-  };
+  const { studentSignUp } = useAuth();
 
   const updateField = (setter) => (event) => {
     setter(() => event.target.value);
+  };
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    studentSignUp(name, email, password)
+      .then((res) => {
+        console.log(res);
+        navigate('/student-login');
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -49,17 +49,31 @@ export default function StudentLogin() {
           <div className="xl:h-auto xl:py-0 xl:my-0 flex h-screen py-5 my-10">
             <div className="xl:ml-20 xl:bg-transparent sm:px-8 xl:p-0 xl:shadow-none lg:w-1/2 w-full px-5 py-8 mx-auto my-auto bg-white rounded-md shadow-md">
               <h2 className="xl:text-3xl xl:text-left text-2xl font-medium text-center">
-                Student Sign In
+                Student Sign Up
               </h2>
-              <form className="w-full mt-10 space-y-6" onSubmit={handleSignin}>
+              <form className="w-full mt-10 space-y-6" onSubmit={handleSignUp}>
+                <div>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={name}
+                    onChange={updateField(setName)}
+                    autoComplete="name"
+                    required
+                    placeholder="Name"
+                    className="ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 block w-full px-4 py-3 text-gray-900 bg-white border-0 rounded-lg shadow-sm"
+                  />
+                </div>
+
                 <div>
                   <input
                     id="email"
                     name="email"
                     type="email"
-                    autoComplete="email"
                     value={email}
                     onChange={updateField(setEmail)}
+                    autoComplete="email"
                     required
                     placeholder="Email address"
                     className="ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 block w-full px-4 py-3 text-gray-900 bg-white border-0 rounded-lg shadow-sm"
@@ -70,9 +84,9 @@ export default function StudentLogin() {
                   <input
                     id="password"
                     name="password"
-                    type="password"
                     value={password}
                     onChange={updateField(setPassword)}
+                    type="password"
                     placeholder="Password"
                     autoComplete="current-password"
                     required
@@ -106,25 +120,26 @@ export default function StudentLogin() {
                   type="submit"
                   className="bg-primary hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary flex justify-center w-full px-3 py-3 text-sm font-medium leading-6 text-white rounded-md shadow-sm"
                 >
-                  Sign in
+                  Sign up
                 </button>
+
+                <div>
+                  <Link
+                    to="/tutor-signup"
+                    className="hover:text-indigo-500 text-primary mt-1 text-sm font-normal text-center"
+                  >
+                    Register as a Tutor
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    to="/student-login"
+                    className="hover:text-indigo-500 text-primary mt-1 text-sm font-normal text-center"
+                  >
+                    Login
+                  </Link>
+                </div>
               </form>
-
-              <button
-                onClick={googleLogin}
-                className="bg-primary mt-5 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary flex justify-center w-full px-3 py-3 text-sm font-medium leading-6 text-white rounded-md shadow-sm"
-              >
-                Sign in with Google
-              </button>
-
-              <div>
-                <Link
-                  to="/tutor-login"
-                  className="hover:text-indigo-500 text-primary mt-1 text-sm font-normal text-center"
-                >
-                  Login as a Tutor
-                </Link>
-              </div>
             </div>
           </div>
         </div>
